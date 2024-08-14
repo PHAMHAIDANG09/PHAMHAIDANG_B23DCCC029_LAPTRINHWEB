@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm </title>
+</head>
+<body>
+  <ul id ="list"></ul>
+  <script>
+    let newItem = document.createElement('li');
+    newItem.textContent = 'Item 1';
+    const list =document.getElementById("list")
+    list.appendChild(newItem);
+  </script>
+</body>
+</html>

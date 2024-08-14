@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 8</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+
+        table, th, td {
+            border: 2px solid #4CAF50;
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td {
+            background-color: #f2f2f2;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+   <div id ="table-container"></div>
+    <script>
+        let table = document.createElement('table');
+        for (let i = 0; i < 3; i++) {
+            let row = document.createElement('tr');
+            for (let j = 0; j < 3; j++) {
+                let cell = document.createElement('td');
+                cell.textContent = `Row ${i + 1}, Col ${j + 1}`;                
+                row.appendChild(cell);
+            }           
+            table.appendChild(row);
+        }       
+        document.getElementById('table-container').appendChild(table);
+    </script>
+
+</body>
+</html>
