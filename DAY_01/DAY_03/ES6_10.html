@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ES6</title>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <script type="text/babel">
+        class Member {
+        constructor() {
+            this.name = "Dương Minh Trí";
+        }
+
+        memberName() {
+            return this.name;
+        }
+        }
+        var x = new Member();
+        console.log(x.memberName()); 
+    </script>
+  </body>
+</html>
