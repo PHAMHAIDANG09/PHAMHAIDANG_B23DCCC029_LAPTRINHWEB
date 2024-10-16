@@ -1,0 +1,126 @@
+/* Định dạng toàn bộ body */
+body {
+  display: flex; /* Sử dụng flexbox */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  height: 100vh; /* Chiều cao 100% của viewport */
+  margin: 0; /* Bỏ mặc định margin */
+  background-color: #e9ecef; /* Màu nền cho toàn bộ trang */
+}
+
+/* Định dạng chung cho container */
+.todo-container {
+  width: 80%; /* Chiều rộng của container */
+  max-width: 600px; /* Chiều rộng tối đa */
+  margin: 20px; /* Khoảng cách trên/dưới */
+  background-color: #f5f5f5; /* Màu nền nhạt */
+  padding: 20px; /* Khoảng cách bên trong */
+  border-radius: 10px; /* Bo góc */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+  font-family: Arial, sans-serif; /* Font chữ */
+}
+
+h1 {
+  text-align: center; /* Căn giữa tiêu đề */
+  color: #333; /* Màu chữ tối */
+  margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+}
+
+/* Định dạng cho input */
+input[type="text"], input[type="datetime-local"] {
+  width: 45%; /* Chiều rộng */
+  padding: 10px; /* Khoảng cách bên trong */
+  margin: 10px 0; /* Khoảng cách bên ngoài */
+  border: 1px solid #ccc; /* Viền */
+  border-radius: 5px; /* Bo góc */
+  font-size: 16px; /* Kích thước chữ */
+}
+
+input[type="text"]:focus, input[type="datetime-local"]:focus {
+  outline: none; /* Bỏ viền mặc định */
+  border-color: #007bff; /* Đổi màu viền khi focus */
+}
+
+/* Nút "Update" */
+button {
+  padding: 10px 20px; /* Khoảng cách bên trong */
+  background-color: #28a745; /* Màu nền xanh */
+  color: white; /* Màu chữ trắng */
+  border: none; /* Không có viền */
+  border-radius: 5px; /* Bo góc */
+  font-size: 16px; /* Kích thước chữ */
+  cursor: pointer; /* Hiệu ứng con trỏ */
+  margin-left: 10px; /* Khoảng cách trái cho nút */
+}
+
+button:hover {
+  background-color: #218838; /* Màu nền khi hover */
+}
+
+/* Định dạng cho danh sách task */
+ul {
+  list-style: none; /* Bỏ dấu đầu dòng */
+  padding: 0; /* Bỏ padding */
+}
+
+li {
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: space-between; /* Căn đều giữa các phần tử */
+  background-color: #ffffff; /* Màu nền trắng */
+  margin: 10px 0; /* Khoảng cách giữa các task */
+  padding: 15px; /* Khoảng cách bên trong */
+  border-radius: 5px; /* Bo góc */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  margin-right: 10px; /* Khoảng cách bên phải */
+  transform: scale(1.2); /* Phóng to checkbox */
+}
+
+/* Văn bản của task */
+span {
+  flex-grow: 1; /* Tự động mở rộng */
+  font-size: 18px; /* Kích thước chữ */
+  color: #333; /* Màu chữ tối */
+}
+
+span.done {
+  text-decoration: line-through; /* Gạch ngang khi hoàn thành */
+  color: #888; /* Màu chữ xám khi hoàn thành */
+}
+
+/* Schedule input (datetime-local) */
+div {
+  display: inline-block; /* Căn chỉnh ngang */
+  margin-right: 20px; /* Khoảng cách bên phải */
+}
+
+input[type="datetime-local"] {
+  font-size: 14px; /* Kích thước chữ */
+  padding: 8px; /* Khoảng cách bên trong */
+  border: 1px solid #ccc; /* Viền */
+  border-radius: 5px; /* Bo góc */
+  width: 200px; /* Chiều rộng cố định */
+}
+
+input[type="datetime-local"]:focus {
+  outline: none; /* Bỏ viền mặc định */
+  border-color: #007bff; /* Đổi màu viền khi focus */
+}
+
+/* Nút Xóa */
+button.remove {
+  padding: 8px 12px; /* Khoảng cách bên trong */
+  background-color: #dc3545; /* Màu nền đỏ */
+  color: white; /* Màu chữ trắng */
+  border: none; /* Không có viền */
+  border-radius: 5px; /* Bo góc */
+  cursor: pointer; /* Hiệu ứng con trỏ */
+}
+
+button.remove:hover {
+  background-color: #c82333; /* Màu nền khi hover */
+}
