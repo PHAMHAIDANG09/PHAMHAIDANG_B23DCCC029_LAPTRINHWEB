@@ -1,126 +1,127 @@
-/* Định dạng toàn bộ body */
-body {
-  display: flex; /* Sử dụng flexbox */
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  height: 100vh; /* Chiều cao 100% của viewport */
-  margin: 0; /* Bỏ mặc định margin */
-  background-color: #e9ecef; /* Màu nền cho toàn bộ trang */
-}
-
-/* Định dạng chung cho container */
+/* Container chính */
 .todo-container {
-  width: 80%; /* Chiều rộng của container */
-  max-width: 600px; /* Chiều rộng tối đa */
-  margin: 20px; /* Khoảng cách trên/dưới */
-  background-color: #f5f5f5; /* Màu nền nhạt */
-  padding: 20px; /* Khoảng cách bên trong */
-  border-radius: 10px; /* Bo góc */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Đổ bóng */
-  font-family: Arial, sans-serif; /* Font chữ */
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 }
 
-h1 {
-  text-align: center; /* Căn giữa tiêu đề */
-  color: #333; /* Màu chữ tối */
-  margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+/* Tiêu đề */
+.todo-container h1 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
 }
 
-/* Định dạng cho input */
-input[type="text"], input[type="datetime-local"] {
-  width: 45%; /* Chiều rộng */
-  padding: 10px; /* Khoảng cách bên trong */
-  margin: 10px 0; /* Khoảng cách bên ngoài */
-  border: 1px solid #ccc; /* Viền */
-  border-radius: 5px; /* Bo góc */
-  font-size: 16px; /* Kích thước chữ */
+/* Input thêm task và lịch trình */
+.todo-container input[type="text"],
+.todo-container input[type="datetime-local"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
-input[type="text"]:focus, input[type="datetime-local"]:focus {
-  outline: none; /* Bỏ viền mặc định */
-  border-color: #007bff; /* Đổi màu viền khi focus */
+/* Button thêm task */
+.todo-container button {
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
-/* Nút "Update" */
-button {
-  padding: 10px 20px; /* Khoảng cách bên trong */
-  background-color: #28a745; /* Màu nền xanh */
-  color: white; /* Màu chữ trắng */
-  border: none; /* Không có viền */
-  border-radius: 5px; /* Bo góc */
-  font-size: 16px; /* Kích thước chữ */
-  cursor: pointer; /* Hiệu ứng con trỏ */
-  margin-left: 10px; /* Khoảng cách trái cho nút */
+.todo-container button:hover {
+  background-color: #45a049;
 }
 
-button:hover {
-  background-color: #218838; /* Màu nền khi hover */
+/* Danh sách task */
+.todo-container ul {
+  list-style-type: none;
+  padding: 0;
 }
 
-/* Định dạng cho danh sách task */
-ul {
-  list-style: none; /* Bỏ dấu đầu dòng */
-  padding: 0; /* Bỏ padding */
+/* Mỗi task */
+.todo-container li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-li {
-  display: flex; /* Sử dụng flexbox */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  justify-content: space-between; /* Căn đều giữa các phần tử */
-  background-color: #ffffff; /* Màu nền trắng */
-  margin: 10px 0; /* Khoảng cách giữa các task */
-  padding: 15px; /* Khoảng cách bên trong */
-  border-radius: 5px; /* Bo góc */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+/* Nội dung công việc và thời gian */
+.task-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+}
+
+/* Tiêu đề công việc */
+.task-details span.task-text {
+  font-size: 16px;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Cắt bớt nếu quá dài */
+}
+
+/* Thời gian */
+.task-details span.task-schedule {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Input sửa task */
+.todo-container li input[type="text"] {
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 /* Checkbox */
-input[type="checkbox"] {
-  margin-right: 10px; /* Khoảng cách bên phải */
-  transform: scale(1.2); /* Phóng to checkbox */
+.todo-container input[type="checkbox"] {
+  margin-right: 10px;
 }
 
-/* Văn bản của task */
-span {
-  flex-grow: 1; /* Tự động mở rộng */
-  font-size: 18px; /* Kích thước chữ */
-  color: #333; /* Màu chữ tối */
+/* Button sửa và xóa */
+.todo-container li button {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 5px;
 }
 
-span.done {
-  text-decoration: line-through; /* Gạch ngang khi hoàn thành */
-  color: #888; /* Màu chữ xám khi hoàn thành */
+/* Button sửa */
+.todo-container li button:nth-child(4) {
+  background-color: #ffc107;
+  color: white;
 }
 
-/* Schedule input (datetime-local) */
-div {
-  display: inline-block; /* Căn chỉnh ngang */
-  margin-right: 20px; /* Khoảng cách bên phải */
+/* Button xóa */
+.todo-container li button:nth-child(5) {
+  background-color: #f44336;
+  color: white;
 }
 
-input[type="datetime-local"] {
-  font-size: 14px; /* Kích thước chữ */
-  padding: 8px; /* Khoảng cách bên trong */
-  border: 1px solid #ccc; /* Viền */
-  border-radius: 5px; /* Bo góc */
-  width: 200px; /* Chiều rộng cố định */
-}
-
-input[type="datetime-local"]:focus {
-  outline: none; /* Bỏ viền mặc định */
-  border-color: #007bff; /* Đổi màu viền khi focus */
-}
-
-/* Nút Xóa */
-button.remove {
-  padding: 8px 12px; /* Khoảng cách bên trong */
-  background-color: #dc3545; /* Màu nền đỏ */
-  color: white; /* Màu chữ trắng */
-  border: none; /* Không có viền */
-  border-radius: 5px; /* Bo góc */
-  cursor: pointer; /* Hiệu ứng con trỏ */
-}
-
-button.remove:hover {
-  background-color: #c82333; /* Màu nền khi hover */
+/* Hiệu ứng hover cho button sửa và xóa */
+.todo-container li button:hover {
+  opacity: 0.8;
 }

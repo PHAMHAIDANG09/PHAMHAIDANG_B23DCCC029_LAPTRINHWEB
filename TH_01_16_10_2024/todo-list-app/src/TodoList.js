@@ -1,60 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const TodoList = () => {
-  const [tasks, setTasks] = useState([
-    { id: 1, text: "Học lập trình web với React", schedule: "2024-10-05T10:30", status: "todo" },
-    { id: 2, text: "Gửi email nộp bài tập về nhà", schedule: "2024-10-06T08:00", status: "done" },
-    { id: 3, text: "Học từ vựng tiếng anh mỗi ngày", schedule: "2024-10-07T15:00", status: "todo" },
-    { id: 4, text: "Viết tiểu luận môn Triết học", schedule: "2024-10-08T12:00", status: "todo" },
-  ]);
-
+  const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [newSchedule, setNewSchedule] = useState("");
+  
+  
+  // Lấy danh sách task từ API khi component load
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/tasks');
+        setTasks(response.data);  // Cập nhật tasks từ API
+      } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
+      }
+    };
+    fetchTasks();
+  }, []);  // Chạy 1 lần khi component mount
 
-
-  const addTask = () => {
+  // Thêm task mới vào API
+  const addTask = async () => {
     if (newTask.trim() === "" || newSchedule.trim() === "") return;
+
     const newTaskItem = {
-      id: tasks.length + 1,
       text: newTask,
       schedule: newSchedule,
       status: "todo"
     };
-    setTasks([...tasks, newTaskItem]);
-    setNewTask("");  // Xóa input sau khi thêm
-    setNewSchedule(""); // Xóa lịch trình sau khi thêm
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/tasks', newTaskItem);
+      setTasks([...tasks, response.data]);  // Thêm task mới vào danh sách
+      setNewTask("");  // Xóa input sau khi thêm
+      setNewSchedule("");  // Xóa lịch trình sau khi thêm
+    } catch (error) {
+      console.error('Lỗi khi thêm task:', error);
+    }
   };
 
-  
-  const removeTask = (taskId) => {
-    const updatedTasks = tasks.filter(task => task.id !== taskId);
-    setTasks(updatedTasks);
+  // Xóa task
+  const removeTask = async (taskId) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/tasks/${taskId}`);
+      setTasks(tasks.filter(task => task.id !== taskId));  // Xóa task khỏi danh sách
+    } catch (error) {
+      console.error('Lỗi khi xóa task:', error);
+    }
   };
 
-  // Bật/tắt 
-  const toggleTaskStatus = (taskId) => {
-    const updatedTasks = tasks.map(task =>
-      task.id === taskId
-        ? { ...task, status: task.status === "todo" ? "done" : "todo" }
-        : task
-    );
-    setTasks(updatedTasks);
+  // Bật/tắt trạng thái task
+  const toggleTaskStatus = async (taskId) => {
+    const updatedTask = tasks.find(task => task.id === taskId);
+    updatedTask.status = updatedTask.status === "todo" ? "done" : "todo";
+
+    try {
+      await axios.put(`http://localhost:3000/api/tasks/${taskId}`, updatedTask);
+      setTasks(tasks.map(task =>
+        task.id === taskId ? updatedTask : task
+      ));
+    } catch (error) {
+      console.error('Lỗi khi cập nhật trạng thái task:', error);
+    }
   };
 
-  // Cập nhật 
-  const updateTaskSchedule = (taskId, newSchedule) => {
-    const updatedTasks = tasks.map(task =>
-      task.id === taskId
-        ? { ...task, schedule: newSchedule }
-        : task
-    );
-    setTasks(updatedTasks);
-  };
-
-  // Sắp xếp 
-  const sortedTasks = tasks.sort((a, b) => {
-    return new Date(a.schedule) - new Date(b.schedule);
-  });
+  // Sắp xếp tasks theo lịch trình
+  const sortedTasks = tasks.sort((a, b) => new Date(a.schedule) - new Date(b.schedule));
 
   return (
     <div className="todo-container">
@@ -75,13 +87,13 @@ const TodoList = () => {
         value={newSchedule} 
         onChange={(e) => setNewSchedule(e.target.value)}
       />
-      <button onClick={addTask}>Update</button>
+      <button onClick={addTask}>Add Task</button>
 
       {/* Danh sách task */}
       <ul>
         {sortedTasks.map(task => (
           <li key={task.id}>
-            {/* Thay radio bằng checkbox */}
+            {/* Thay checkbox để bật/tắt trạng thái */}
             <input
               type="checkbox"
               checked={task.status === "done"}
@@ -96,12 +108,15 @@ const TodoList = () => {
               <input 
                 type="datetime-local" 
                 value={task.schedule} 
-                onChange={(e) => updateTaskSchedule(task.id, e.target.value)} 
+                onChange={(e) => {
+                  const updatedTask = { ...task, schedule: e.target.value };
+                  setTasks(tasks.map(t => t.id === task.id ? updatedTask : t));
+                }} 
               />
             </div>
 
             {/* Nút xóa task */}
-            <button onClick={() => removeTask(task.id)}>Xoá</button>
+            <button onClick={() => removeTask(task.id)}>Delete</button>
           </li>
         ))}
       </ul>
