@@ -18,6 +18,7 @@ app.get('/api/tasks', (req, res) => {
   });
 });
 
+
 // Thêm task mới
 app.post('/api/tasks', (req, res) => {
   const { text, schedule, status } = req.body;
@@ -28,18 +29,20 @@ app.post('/api/tasks', (req, res) => {
       if (error) {
         return res.status(500).send('Lỗi khi thêm task');
       }
-      res.status(201).send('Task đã được thêm');
+      res.status(201).json({ insertId: results.insertId });  // Trả về ID mới
     }
   );
 });
 
-// Cập nhật trạng thái task
+
+// Cập nhật task
 app.put('/api/tasks/:id', (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
+  const { text, schedule, status } = req.body;
+  
   connection.query(
-    'UPDATE tasks SET status = ? WHERE id = ?',
-    [status, id],
+    'UPDATE tasks SET text = ?, schedule = ?, status = ? WHERE id = ?',
+    [text, schedule, status, id],
     (error, results) => {
       if (error) {
         return res.status(500).send('Lỗi khi cập nhật task');
@@ -48,6 +51,8 @@ app.put('/api/tasks/:id', (req, res) => {
     }
   );
 });
+
+
 
 // Xóa task
 app.delete('/api/tasks/:id', (req, res) => {

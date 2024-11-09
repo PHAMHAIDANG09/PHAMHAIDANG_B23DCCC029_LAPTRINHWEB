@@ -5,46 +5,68 @@ const TodoList = () => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [newSchedule, setNewSchedule] = useState("");
-  
-  
+  const [editingTaskId, setEditingTaskId] = useState(null);
+
+  // Hàm chuyển đổi định dạng thời gian về định dạng `YYYY-MM-DDTHH:MM`
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16); // Chỉ lấy `YYYY-MM-DDTHH:MM`
+  };
+
   // Lấy danh sách task từ API khi component load
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/tasks');
-        setTasks(response.data);  // Cập nhật tasks từ API
+        // Cập nhật tasks với định dạng thời gian đã được chuẩn hóa
+        const formattedTasks = response.data.map(task => ({
+          ...task,
+          schedule: formatDate(task.schedule) // Chuyển đổi định dạng thời gian
+        }));
+        setTasks(formattedTasks);
       } catch (error) {
         console.error('Lỗi khi gọi API:', error);
       }
     };
     fetchTasks();
-  }, []);  // Chạy 1 lần khi component mount
+  }, []);
 
-  // Thêm task mới vào API
-  const addTask = async () => {
+  // Thêm hoặc cập nhật task
+  const saveTask = async () => {
     if (newTask.trim() === "" || newSchedule.trim() === "") return;
-
-    const newTaskItem = {
+  
+    const taskData = {
       text: newTask,
       schedule: newSchedule,
       status: "todo"
     };
-
+  
     try {
-      const response = await axios.post('http://localhost:3000/api/tasks', newTaskItem);
-      setTasks([...tasks, response.data]);  // Thêm task mới vào danh sách
-      setNewTask("");  // Xóa input sau khi thêm
-      setNewSchedule("");  // Xóa lịch trình sau khi thêm
+      if (editingTaskId) {
+        // Nếu đang chỉnh sửa task
+        await axios.put(`http://localhost:3000/api/tasks/${editingTaskId}`, taskData);
+        setTasks(tasks.map(task => (task.id === editingTaskId ? { ...task, ...taskData } : task)));
+        setEditingTaskId(null);
+      } else {
+        // Nếu là task mới
+        const response = await axios.post('http://localhost:3000/api/tasks', taskData);
+        const newTask = { ...taskData, id: response.data.insertId }; // Lấy ID từ phản hồi
+        setTasks([...tasks, newTask]);  // Cập nhật danh sách tasks ngay lập tức
+      }
+      setNewTask("");
+      setNewSchedule("");
     } catch (error) {
-      console.error('Lỗi khi thêm task:', error);
+      console.error('Lỗi khi lưu task:', error);
     }
   };
+  
+  
 
   // Xóa task
   const removeTask = async (taskId) => {
     try {
       await axios.delete(`http://localhost:3000/api/tasks/${taskId}`);
-      setTasks(tasks.filter(task => task.id !== taskId));  // Xóa task khỏi danh sách
+      setTasks(tasks.filter(task => task.id !== taskId));
     } catch (error) {
       console.error('Lỗi khi xóa task:', error);
     }
@@ -57,12 +79,17 @@ const TodoList = () => {
 
     try {
       await axios.put(`http://localhost:3000/api/tasks/${taskId}`, updatedTask);
-      setTasks(tasks.map(task =>
-        task.id === taskId ? updatedTask : task
-      ));
+      setTasks(tasks.map(task => (task.id === taskId ? updatedTask : task)));
     } catch (error) {
       console.error('Lỗi khi cập nhật trạng thái task:', error);
     }
+  };
+
+  // Bắt đầu chỉnh sửa task
+  const editTask = (task) => {
+    setNewTask(task.text);
+    setNewSchedule(formatDate(task.schedule)); // Định dạng thời gian khi chỉnh sửa
+    setEditingTaskId(task.id);
   };
 
   // Sắp xếp tasks theo lịch trình
@@ -72,38 +99,31 @@ const TodoList = () => {
     <div className="todo-container">
       <h1>My work 🎯</h1>
 
-      {/* Thêm task mới */}
       <input 
         type="text" 
         placeholder="Add new task" 
         value={newTask} 
         onChange={(e) => setNewTask(e.target.value)}
       />
-      
-      {/* Thêm lịch trình */}
       <input 
         type="datetime-local" 
         placeholder="Add schedule" 
         value={newSchedule} 
         onChange={(e) => setNewSchedule(e.target.value)}
       />
-      <button onClick={addTask}>Add Task</button>
+      <button onClick={saveTask}>{editingTaskId ? "Update Task" : "Add Task"}</button>
 
-      {/* Danh sách task */}
       <ul>
         {sortedTasks.map(task => (
           <li key={task.id}>
-            {/* Thay checkbox để bật/tắt trạng thái */}
             <input
               type="checkbox"
               checked={task.status === "done"}
-              onChange={() => toggleTaskStatus(task.id)} // Bật/tắt trạng thái khi click
+              onChange={() => toggleTaskStatus(task.id)}
             />
             <span style={{ textDecoration: task.status === "done" ? "line-through" : "none" }}>
               {task.text}
             </span>
-
-            {/* Hiển thị và sửa lịch trình */}
             <div>
               <input 
                 type="datetime-local" 
@@ -114,8 +134,7 @@ const TodoList = () => {
                 }} 
               />
             </div>
-
-            {/* Nút xóa task */}
+            <button onClick={() => editTask(task)}>Edit</button>
             <button onClick={() => removeTask(task.id)}>Delete</button>
           </li>
         ))}
