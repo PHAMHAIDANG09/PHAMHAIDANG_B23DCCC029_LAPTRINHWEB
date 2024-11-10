@@ -1,11 +1,10 @@
-// todo-backend/database.js
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-  host: 'localhost',  // Địa chỉ MySQL
-  user: 'root', // Tên người dùng MySQL
-  password: '', // Mật khẩu MySQL
-  database: 'todo_app' // Tên database
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'todo_app'
 });
 
 connection.connect((err) => {

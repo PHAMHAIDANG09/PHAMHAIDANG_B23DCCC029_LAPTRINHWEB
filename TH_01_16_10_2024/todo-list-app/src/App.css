@@ -1,4 +1,4 @@
-/* Container chính */
+
 .todo-container {
   max-width: 500px;
   margin: 0 auto;
@@ -9,14 +9,14 @@
   font-family: Arial, sans-serif;
 }
 
-/* Tiêu đề */
+
 .todo-container h1 {
   text-align: center;
   color: #333;
   font-size: 24px;
 }
 
-/* Input thêm task và lịch trình */
+
 .todo-container input[type="text"],
 .todo-container input[type="datetime-local"] {
   width: 100%;
@@ -28,7 +28,7 @@
   box-sizing: border-box;
 }
 
-/* Button thêm task */
+
 .todo-container button {
   padding: 10px 15px;
   background-color: #4caf50;
@@ -44,13 +44,13 @@
   background-color: #45a049;
 }
 
-/* Danh sách task */
+
 .todo-container ul {
   list-style-type: none;
   padding: 0;
 }
 
-/* Mỗi task */
+
 .todo-container li {
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Nội dung công việc và thời gian */
+
 .task-details {
   flex: 1;
   display: flex;
@@ -70,22 +70,22 @@
   margin-right: 10px;
 }
 
-/* Tiêu đề công việc */
+
 .task-details span.task-text {
   font-size: 16px;
   color: #333;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Cắt bớt nếu quá dài */
+  text-overflow: ellipsis; 
 }
 
-/* Thời gian */
+
 .task-details span.task-schedule {
   font-size: 14px;
   color: #666;
 }
 
-/* Input sửa task */
+
 .todo-container li input[type="text"] {
   width: 100%;
   padding: 5px;
@@ -94,12 +94,12 @@
   border-radius: 5px;
 }
 
-/* Checkbox */
+
 .todo-container input[type="checkbox"] {
   margin-right: 10px;
 }
 
-/* Button sửa và xóa */
+
 .todo-container li button {
   padding: 5px 10px;
   font-size: 14px;
@@ -109,19 +109,19 @@
   margin-left: 5px;
 }
 
-/* Button sửa */
+
 .todo-container li button:nth-child(4) {
   background-color: #ffc107;
   color: white;
 }
 
-/* Button xóa */
+
 .todo-container li button:nth-child(5) {
   background-color: #f44336;
   color: white;
 }
 
-/* Hiệu ứng hover cho button sửa và xóa */
+
 .todo-container li button:hover {
   opacity: 0.8;
 }

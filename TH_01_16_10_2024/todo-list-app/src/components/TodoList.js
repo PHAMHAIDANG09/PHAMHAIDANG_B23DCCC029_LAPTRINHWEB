@@ -7,21 +7,21 @@ const TodoList = () => {
   const [newSchedule, setNewSchedule] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
 
-  // Hàm chuyển đổi định dạng thời gian về định dạng `YYYY-MM-DDTHH:MM`
+  
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toISOString().slice(0, 16); // Chỉ lấy `YYYY-MM-DDTHH:MM`
+    return date.toISOString().slice(0, 16); 
   };
 
-  // Lấy danh sách task từ API khi component load
+  
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/tasks');
-        // Cập nhật tasks với định dạng thời gian đã được chuẩn hóa
+       
         const formattedTasks = response.data.map(task => ({
           ...task,
-          schedule: formatDate(task.schedule) // Chuyển đổi định dạng thời gian
+          schedule: formatDate(task.schedule) 
         }));
         setTasks(formattedTasks);
       } catch (error) {
@@ -31,7 +31,7 @@ const TodoList = () => {
     fetchTasks();
   }, []);
 
-  // Thêm hoặc cập nhật task
+  
   const saveTask = async () => {
     if (newTask.trim() === "" || newSchedule.trim() === "") return;
   
@@ -43,15 +43,15 @@ const TodoList = () => {
   
     try {
       if (editingTaskId) {
-        // Nếu đang chỉnh sửa task
+       
         await axios.put(`http://localhost:3000/api/tasks/${editingTaskId}`, taskData);
         setTasks(tasks.map(task => (task.id === editingTaskId ? { ...task, ...taskData } : task)));
         setEditingTaskId(null);
       } else {
-        // Nếu là task mới
+        
         const response = await axios.post('http://localhost:3000/api/tasks', taskData);
-        const newTask = { ...taskData, id: response.data.insertId }; // Lấy ID từ phản hồi
-        setTasks([...tasks, newTask]);  // Cập nhật danh sách tasks ngay lập tức
+        const newTask = { ...taskData, id: response.data.insertId }; 
+        setTasks([...tasks, newTask]); 
       }
       setNewTask("");
       setNewSchedule("");
@@ -62,7 +62,7 @@ const TodoList = () => {
   
   
 
-  // Xóa task
+ 
   const removeTask = async (taskId) => {
     try {
       await axios.delete(`http://localhost:3000/api/tasks/${taskId}`);
@@ -72,7 +72,7 @@ const TodoList = () => {
     }
   };
 
-  // Bật/tắt trạng thái task
+ 
   const toggleTaskStatus = async (taskId) => {
     const updatedTask = tasks.find(task => task.id === taskId);
     updatedTask.status = updatedTask.status === "todo" ? "done" : "todo";
@@ -85,14 +85,14 @@ const TodoList = () => {
     }
   };
 
-  // Bắt đầu chỉnh sửa task
+
   const editTask = (task) => {
     setNewTask(task.text);
-    setNewSchedule(formatDate(task.schedule)); // Định dạng thời gian khi chỉnh sửa
+    setNewSchedule(formatDate(task.schedule)); 
     setEditingTaskId(task.id);
   };
 
-  // Sắp xếp tasks theo lịch trình
+  
   const sortedTasks = tasks.sort((a, b) => new Date(a.schedule) - new Date(b.schedule));
 
   return (
